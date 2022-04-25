@@ -11,6 +11,6 @@
 
 ## Содержание
 ### Замыкания
-- [Примеры на Python](./closures/Python/)
-- [Примеры на Dart](./closures/Dart/closure/bin/)
+- [Примеры на Python](./closures/python/)
+- [Примеры на Dart](./closures/dart/)
 ### Генераторы
