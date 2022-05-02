@@ -9,8 +9,7 @@
 - `dart run`
 - `python3 name.py`
 
-## Содержание
-### Замыкания
-- [Примеры на Python](./closures/python/)
-- [Примеры на Dart](./closures/dart/)
-### Генераторы
+## Примеры
+- [Замыкания](./closures/bin/)
+- [Концепция cps в функциональном стиле](./cps-concept/example.py)
+- [Пример комбинирования генераторов: python linq](./linq_example/)
