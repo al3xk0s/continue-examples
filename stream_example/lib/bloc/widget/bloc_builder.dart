@@ -2,18 +2,30 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:stream_example/bloc/base/bloc.dart';
+import 'package:stream_example/bloc/base/event.dart';
+import 'package:stream_example/bloc/base/state.dart';
+import 'package:stream_example/bloc/base/tag.dart';
 
-class BlocBuilder<E, S, B extends Bloc<E, S>> extends StatefulWidget {
-  const BlocBuilder({super.key, required this.bloc, required this.builder});
+class BlocBuilder<
+    E extends BlocEvent, 
+    S extends BlocState, 
+    B extends Bloc<E, S>
+> extends StatefulWidget {
+  const BlocBuilder({super.key, required this.bloc, required this.builder, this.tag = const GlobalBlocTag()});
 
   final B bloc;
   final Widget Function(BuildContext context, B bloc, S state) builder;
+  final BlocTag tag;
 
   @override
   State<BlocBuilder> createState() => _BlocBuilderState<E, S, B>();
 }
 
-class _BlocBuilderState<E, S, B extends Bloc<E, S>> extends State<BlocBuilder> {
+class _BlocBuilderState<
+    E extends BlocEvent, 
+    S extends BlocState, 
+    B extends Bloc<E, S>
+> extends State<BlocBuilder> {
   late BlocBuilder<E, S, B> _widget;
   late StreamSubscription<S> _subscription;
 
@@ -25,9 +37,10 @@ class _BlocBuilderState<E, S, B extends Bloc<E, S>> extends State<BlocBuilder> {
 
   @override
   void didChangeDependencies() {
-    _subscription = _widget.bloc.out.listen((state) => setState(() {
-
-    }));
+    _subscription = _widget.bloc.out.listen((state) {
+      if(state.tag != widget.tag) return;
+      setState(() { });
+    });
     super.didChangeDependencies();
   }
 

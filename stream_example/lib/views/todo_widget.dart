@@ -13,7 +13,6 @@ class TodoWidget extends StatelessWidget {
     return Card(
       child: ListTile(
         title: Text(todo.title),
-        subtitle: Text(todo.description),
         onTap: () {},
       ),
     );

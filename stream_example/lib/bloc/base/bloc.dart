@@ -1,12 +1,15 @@
 import 'dart:async';
 
 import 'package:stream_example/bloc/base/bloc_handle_storage.dart';
+import 'package:stream_example/bloc/base/event.dart';
+import 'package:stream_example/bloc/base/state.dart';
+import 'package:stream_example/bloc/base/tag.dart';
 
-abstract class Bloc<E, S>{
+abstract class Bloc<E extends BlocEvent, S extends BlocState>{
   void emit(E event);
   void emitState(S state);
 
-  void onEvent<Event extends E>(EventHandler<Event> handler);
+  void onEvent<Event extends E>(EventHandler<Event> handler, {BlocTag tag = const GlobalBlocTag()});
 
   Stream<S> get out;
 
@@ -15,7 +18,7 @@ abstract class Bloc<E, S>{
   S get state;
 }
 
-abstract class BlocBase<E, S> implements Bloc<E, S> {
+abstract class BlocBase<E extends BlocEvent, S extends BlocState> implements Bloc<E, S> {
   BlocBase(S initialState, BlocHandleStorage<E> blocHandleStorage) {
     _blocHandleStorage = blocHandleStorage;
     _state = initialState;
@@ -45,8 +48,8 @@ abstract class BlocBase<E, S> implements Bloc<E, S> {
   }
   
   @override
-  void onEvent<Event extends E>(EventHandler<Event> handler) {
-    _blocHandleStorage.addEventHandler<Event>(handler);
+  void onEvent<Event extends E>(EventHandler<Event> handler, {BlocTag tag = const GlobalBlocTag()}) {
+    _blocHandleStorage.addEventHandler<Event>(handler, tag);
   }
 
   @override

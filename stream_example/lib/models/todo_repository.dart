@@ -1,13 +1,14 @@
 import 'dart:math';
 
-import 'package:stream_example/models/todo/todo.dart';
+import 'package:stream_example/models/todo/abstract/todo_id.dart';
+import 'package:stream_example/models/todo/abstract/todo_model.dart';
 
 abstract class TodoRepository {
-  Future<List<Todo>> getTodos();
+  Stream<TodoModel> getTodos();
 
-  Future<void> addTodo(Todo todo);
+  Future<void> addTodo(TodoModel todo);
 
-  Future<Todo?> getTodo(TodoId id);
+  Future<TodoModel?> getTodo(TodoId id);
   
   Future<void> removeTodo(TodoId id);
 
@@ -15,10 +16,10 @@ abstract class TodoRepository {
 }
 
 class TodoRepositoryImpl implements TodoRepository {
-  final _idTodoMap = <TodoId, Todo>{};
+  final _idTodoMap = <TodoId, TodoModel>{};
   
   @override
-  Future<void> addTodo(Todo todo) async {
+  Future<void> addTodo(TodoModel todo) async {
     await _delay();
 
     if(_idTodoMap.containsKey(todo.id)) {
@@ -29,9 +30,10 @@ class TodoRepositoryImpl implements TodoRepository {
   }
   
   @override
-  Future<List<Todo>> getTodos() async {
-    await _delay();
-    return _idTodoMap.values.toList();
+  Stream<TodoModel> getTodos() async* {
+    for(final TodoId id in _idTodoMap.keys) {
+      yield (await getTodo(id))!;
+    }
   }
   
   @override
@@ -42,19 +44,19 @@ class TodoRepositoryImpl implements TodoRepository {
   
   @override
   Future<void> removeTodo(TodoId id) async {
-    if(!(await hasTodo(id))) throw Exception('Удаляемая задача с id $id не найдена');
+    await _delay();
     _idTodoMap.remove(id);
   }
 
   final Random _gen = Random();
 
   Future<void> _delay() {
-    final Duration duration = Duration(seconds: _gen.nextInt(2), microseconds: _gen.nextInt(499));
+    final Duration duration = Duration(microseconds: _gen.nextInt(499));
     return Future.delayed(duration);
   }
   
   @override
-  Future<Todo?> getTodo(TodoId id) async {
+  Future<TodoModel?> getTodo(TodoId id) async {
     await _delay();
     return _idTodoMap[id];
   }

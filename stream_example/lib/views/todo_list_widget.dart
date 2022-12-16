@@ -9,12 +9,7 @@ class TodoListWidget extends StatelessWidget {
 
   List<Todo> _getTodos() {
     return [
-      Todo(id: '0', title: '123', description: ''),
-      Todo(id: '0', title: '123', description: ''),
-      Todo(id: '0', title: '123', description: ''),
-      Todo(id: '0', title: '123', description: ''),
-      Todo(id: '0', title: '123', description: ''),
-      Todo(id: '0', title: '123', description: ''),
+
     ];
   }
 
