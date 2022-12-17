@@ -20,3 +20,12 @@ String Function(String) Function(String) getLinkCreator(String scheme) {
     return getWebsite;
   };
 }
+
+  // Вывод:
+  //
+  // https://rutube.ru
+  // https://mail.ru
+  // https://tproger.ru
+  // https://google.com
+  // https://amazon.com
+  // https://netflix.com

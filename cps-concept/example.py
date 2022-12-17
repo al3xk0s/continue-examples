@@ -40,14 +40,19 @@ def get_continue(initial_number):
 
 
 def main():
-    get_continue
-    (30)
-    (add, 5)
-    (divide, 2)
-    (out)
-    (multiply, 3)
+    get_continue \
+    (30) \
+    (add, 5) \
+    (divide, 2) \
+    (out) \
+    (multiply, 3) \
     (out)
     
 
 
 main()
+
+# Вывод:
+#
+# 17.5
+# 52.5

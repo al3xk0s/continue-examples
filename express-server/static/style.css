@@ -1,0 +1,31 @@
+html {
+    height: 1vh;
+    width: 100%;
+}
+
+body {
+    height: 1vh;
+    width: 100%;
+    background-color: #6537e223;
+}
+
+.wrapper {
+    padding: 10px;
+}
+
+.wrapper div {
+    margin-bottom: 10px;
+}
+
+.text {
+    font-size: 18px;
+    font-style: italic;
+}
+
+.photo__image-wrapper {
+    display: flex;
+    flex-shrink: 1;
+    width: 200px;
+    height: 200px;
+    box-shadow: 4px 4px 8px 0px rgba(34, 60, 80, 0.2);
+}

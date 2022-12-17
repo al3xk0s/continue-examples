@@ -22,3 +22,5 @@ Future<int> getSumOfFileNumbers() async {
 
   return sum;
 }
+
+// Вывод: 55

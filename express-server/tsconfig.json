@@ -1,0 +1,13 @@
+{
+    "compilerOptions": {
+       "target": "ES2019",
+       "module": "ES6",
+       "allowSyntheticDefaultImports": true,
+       "alwaysStrict": true,
+        "outDir": "dist",
+        "moduleResolution":"node",
+    },
+    "include": [
+        "src/**/*"
+    ]
+}
