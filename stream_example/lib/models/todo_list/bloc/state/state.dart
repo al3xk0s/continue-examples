@@ -1,13 +1,13 @@
 import 'package:stream_example/bloc/base/state.dart';
 import 'package:stream_example/bloc/base/tag.dart';
 import 'package:stream_example/models/todo/abstract/todo.dart';
-import 'package:stream_example/models/todo_list/todo_filter/filter.dart';
 
 part 'list_states.dart';
 
 abstract class TodoListState extends BlocState { 
   const TodoListState({super.tag});
-  static const TodoListState loading = TodoListLoadingState();
   static const TodoListState initial = TodoListInitialState();
+  static const TodoListState loading = TodoListLoadingState();
   static const TodoListState loadingError = TodoListLoadingErrorState();
+  static const TodoListState emptyState = TodoListEmptyState();
 }

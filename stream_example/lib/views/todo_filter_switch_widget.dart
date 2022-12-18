@@ -14,11 +14,14 @@ class TodoFitlerSwitchWidget extends StatelessWidget {
     return BlocBuilder<TodoListEvent, TodoListState, TodoListBloc>(
       bloc: context.readBloc()!, 
       builder: (context, bloc, state) {
-        if(state is! HasFilterState) return _getDefaultWidget();
+        if(
+          state is! TodoListSuccessLoadedState && 
+          state is! TodoListEmptyState
+        ) return _getDefaultWidget();
 
         return IconButton(
-          icon: _filterIconMap[state.filter]!,
-          onPressed: () => bloc.emit(TodoListNextFilterEvent(state.filter)),
+          icon: _filterIconMap[bloc.filter]!,
+          onPressed: () => bloc.emit(TodoListEvent.nextFilter),
         );
       }
     );

@@ -73,6 +73,12 @@ class TodoListScreen extends StatelessWidget {
     bloc.onEvent<TodoListTodoResolvedEvent>((e) => _handleEventMessage(context, e));
     bloc.onEvent<TodoListTodoActualizeEvent>((e) => _handleEventMessage(context, e));
     bloc.onEvent<TodoListTodoRemovedEvent>((e) => _handleEventMessage(context, e));
+
+    bloc.onEvent<TodoListNextFilterEvent>((e) => context.snackbarMessage(
+        bloc.filter.description,
+        duration: const Duration(milliseconds: 500),
+      ),
+    );
   }
 
   void _handleEventMessage(BuildContext context, TodoListMessageEvent event) {

@@ -8,20 +8,16 @@ class TodoListLoadingState extends TodoListState {
   const TodoListLoadingState() : super(tag: BlocTag.global);
 }
 
-abstract class HasFilterState extends TodoListState {
-  const HasFilterState({required this.filter});
-  final TodoFilter filter;
-}
-
-class TodoListSuccessLoadedState extends HasFilterState {
-  const TodoListSuccessLoadedState(this.todos, {required super.filter});
+class TodoListSuccessLoadedState extends TodoListState {
+  const TodoListSuccessLoadedState(this.todos);
   final List<Todo> todos;
 }
 
-class TodoListEmptyState extends HasFilterState {
-  const TodoListEmptyState({required super.filter});
+class TodoListEmptyState extends TodoListState {
+  const TodoListEmptyState();
 }
 
 class TodoListLoadingErrorState extends TodoListState {
   const TodoListLoadingErrorState();
 }
+

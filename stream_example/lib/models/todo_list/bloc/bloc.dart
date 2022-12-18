@@ -11,7 +11,7 @@ import 'package:stream_example/models/todo_list/todo_list.dart';
 
 class TodoListBloc extends BlocBase<TodoListEvent, TodoListState> {
   TodoListBloc(this.todoList) : super(
-    const TodoListInitialState(),
+    TodoListState.initial,
     BlocHandleStorageImpl()
   ) {
 
@@ -23,33 +23,34 @@ class TodoListBloc extends BlocBase<TodoListEvent, TodoListState> {
     onEvent<TodoListRemoveTodoEvent>(_onRemoveTodo);
   }
 
+  static const List<TodoFilter> _filters = [
+    TodoFilter.sorting,
+    TodoFilter.onlyActual,
+    TodoFilter.onlyResolved, 
+  ];
+
   final TodoList todoList;
-  late TodoFilter _actualFilter;
+  TodoFilter get filter => _actualFilter;
+  TodoFilter get nextFilter => _getNextFilter();
+
+  TodoFilter _actualFilter = _filters.first;
 
   Future<void> _onGetData(TodoListGetDataEvent event) async {
-    _actualFilter = event.filter;
-
     try {
       final List<Todo> todos = await todoList.getTodos().toList();
       final List<Todo> selectedTodos = _actualFilter.exec(todos).toList();      
 
       selectedTodos.isEmpty ? 
-        emitState(TodoListEmptyState(filter: _actualFilter)) :
-        emitState(TodoListSuccessLoadedState(selectedTodos, filter: _actualFilter));
+        emitState(TodoListState.emptyState) :
+        emitState(TodoListSuccessLoadedState(selectedTodos));
     } catch (e) {
       emitState(TodoListState.loadingError);
     }
   }
 
   FutureOr<void> _onNextFilterEvent(TodoListNextFilterEvent event) {
-    const filters = [ TodoFilter.sorting, TodoFilter.onlyActual, TodoFilter.onlyResolved ];
-
-    final int currentIndex = filters.indexOf(event.filter);
-    final int nextFilterIndex = (currentIndex + 1) % filters.length;
-
-    final TodoFilter nextFilter = filters[nextFilterIndex];
-
-    emit(TodoListGetDataEvent(nextFilter));
+    _actualFilter = nextFilter;
+    emit(TodoListEvent.getData);
   }
 
   Future<void> _onCreateTodo(TodoListCreateTodoEvent event) async {
@@ -58,7 +59,7 @@ class TodoListBloc extends BlocBase<TodoListEvent, TodoListState> {
     await todoList.addTodo(event.title!);
 
     emit(TodoListChangedTitleEvent(getChangeTitleMessage(event.title!)));
-    emit(TodoListGetDataEvent(_actualFilter));
+    emit(TodoListEvent.getData);
   }
 
   Future<void> _onEditTitle(TodoEditTitleEvent event) async {
@@ -70,7 +71,7 @@ class TodoListBloc extends BlocBase<TodoListEvent, TodoListState> {
     await todoList.editTodo(old.id, event.newTitle!, old.isActual);
 
     emit(TodoListChangedTitleEvent(getChangeTitleMessage(event.newTitle!)));
-    emit(TodoListGetDataEvent(_actualFilter));
+    emit(TodoListEvent.getData);
   }
 
   Future<void> _onSwitchTodoStatus(TodoSwitchStatusEvent event) async {
@@ -81,13 +82,13 @@ class TodoListBloc extends BlocBase<TodoListEvent, TodoListState> {
       emit(TodoListTodoResolvedEvent(getResolveTodoMessage(''))) :
       emit(TodoListTodoActualizeEvent(getActualizeTodoMessage('')));
 
-    emit(TodoListGetDataEvent(_actualFilter));
+    emit(TodoListEvent.getData);
   }
 
   Future<void> _onRemoveTodo(TodoListRemoveTodoEvent event) async {
     final Todo todo = await todoList.removeTodo(event.id);
     emit(TodoListTodoRemovedEvent(getRemoveTodoMessage(todo.title)));
-    emit(TodoListGetDataEvent(_actualFilter));
+    emit(TodoListEvent.getData);
   }
 
   bool _validateTitle(String? title) {
@@ -100,6 +101,13 @@ class TodoListBloc extends BlocBase<TodoListEvent, TodoListState> {
     }
 
     return false;
+  }
+
+  TodoFilter _getNextFilter() {
+    final int index = _filters.indexOf(filter);
+    if(index == -1) throw Exception('Illegal argument');
+
+    return _filters[(index + 1) % _filters.length];
   }
 } 
 
