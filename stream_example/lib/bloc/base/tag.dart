@@ -1,6 +1,8 @@
 abstract class BlocTag {
   const BlocTag();
 
+  static const BlocTag global = GlobalBlocTag();
+
   bool equals(BlocTag other);
   int getHashcode();
 
@@ -16,7 +18,7 @@ abstract class BlocTag {
 abstract class HasTag {
   final BlocTag tag;
 
-  const HasTag({this.tag = const GlobalBlocTag()});
+  const HasTag({this.tag = BlocTag.global});
 }
 
 class GlobalBlocTag implements BlocTag {

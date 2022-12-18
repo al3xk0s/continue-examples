@@ -1,4 +1,4 @@
-abstract class TodoId {
+class TodoId {
   TodoId(this.value) : assert(value.isNotEmpty);
 
   final String value;

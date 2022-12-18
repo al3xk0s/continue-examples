@@ -6,15 +6,18 @@ import 'package:stream_example/bloc/base/event.dart';
 import 'package:stream_example/bloc/base/state.dart';
 import 'package:stream_example/bloc/base/tag.dart';
 
+typedef BlocWidgetBuidler<E extends BlocEvent, S extends BlocState, B extends Bloc<E, S>> =
+  Widget Function(BuildContext context, B bloc, S state);
+
 class BlocBuilder<
     E extends BlocEvent, 
     S extends BlocState, 
     B extends Bloc<E, S>
 > extends StatefulWidget {
-  const BlocBuilder({super.key, required this.bloc, required this.builder, this.tag = const GlobalBlocTag()});
+  const BlocBuilder({super.key, required this.bloc, required this.builder, this.tag = BlocTag.global});
 
   final B bloc;
-  final Widget Function(BuildContext context, B bloc, S state) builder;
+  final BlocWidgetBuidler<E, S, B> builder;
   final BlocTag tag;
 
   @override
@@ -38,7 +41,7 @@ class _BlocBuilderState<
   @override
   void didChangeDependencies() {
     _subscription = _widget.bloc.out.listen((state) {
-      if(state.tag != widget.tag) return;
+      if(!state.tag.equals(widget.tag)) return;
       setState(() { });
     });
     super.didChangeDependencies();

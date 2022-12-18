@@ -7,11 +7,10 @@ import 'package:stream_example/models/todo_repository.dart';
 abstract class TodoList {
   Stream<Todo> getTodos();
   Future<Todo> getTodo(TodoId id);
-  Future<void> removeTodo(TodoId id);
+  Future<Todo> removeTodo(TodoId id);
   Future<Todo> addTodo(String title);
 
-  Future<Todo> renameTodo(TodoId id, String newTitle);
-  Future<Todo> switchTodoStatus(TodoId id);
+  Future<Todo> editTodo(TodoId id, String newTitle, bool newIsActual);
 }
 
 class TodoListImpl implements TodoList {
@@ -25,7 +24,11 @@ class TodoListImpl implements TodoList {
   
   @override
   Future<Todo> addTodo(String title) async {
-    final TodoModel todoModel = _todoFactory.create(title: title, isActual: true);
+    final TodoModel todoModel = _todoFactory.create(
+      id: _todoFactory.createId(),
+      title: title, 
+      isActual: true,
+    );
     await _repository.addTodo(todoModel);
     return todoModel;
   }
@@ -43,28 +46,20 @@ class TodoListImpl implements TodoList {
   }
   
   @override
-  Future<void> removeTodo(TodoId id) async {
+  Future<Todo> removeTodo(TodoId id) async {
     await _validateTodoId(id);
     return _repository.removeTodo(id);
   }
   
   @override
-  Future<Todo> renameTodo(TodoId id, String newTitle) async {
+  Future<Todo> editTodo(TodoId id, String newTitle, bool newIsActual) async {
     await _validateTodoId(id);
     final TodoModel todo = (await _repository.getTodo(id))!;
-    todo.rename(newTitle);
-    return todo;
-  }
-  
-  @override
-  Future<Todo> switchTodoStatus(TodoId id) async {
-    await _validateTodoId(id);
-    final TodoModel todo = (await _repository.getTodo(id))!;
-    todo.switchStatus();
+    todo.edit(newTitle, newIsActual);
     return todo;
   }
 
     Future<void> _validateTodoId(TodoId id) async {
-    if(await _repository.hasTodo(id)) throw Exception('Задача с id $id отсутствует');
+    if(!(await _repository.hasTodo(id))) throw Exception('Задача с id $id отсутствует');
   }
 }

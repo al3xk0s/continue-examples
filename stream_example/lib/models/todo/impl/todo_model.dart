@@ -24,12 +24,8 @@ class TodoModelImpl extends TodoModel {
   }
 
   @override
-  void rename(String title) {
+  void edit(String title, bool isActual) {
     _title = title;
-  }
-
-  @override
-  void switchStatus() {
-    _isActual = !_isActual;
+    _isActual = isActual;
   }
 }

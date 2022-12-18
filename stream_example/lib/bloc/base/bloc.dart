@@ -1,11 +1,12 @@
 import 'dart:async';
 
+import 'package:flutter/foundation.dart';
 import 'package:stream_example/bloc/base/bloc_handle_storage.dart';
 import 'package:stream_example/bloc/base/event.dart';
 import 'package:stream_example/bloc/base/state.dart';
 import 'package:stream_example/bloc/base/tag.dart';
 
-abstract class Bloc<E extends BlocEvent, S extends BlocState>{
+abstract class Bloc<E extends BlocEvent, S extends BlocState> {
   void emit(E event);
   void emitState(S state);
 
@@ -26,7 +27,7 @@ abstract class BlocBase<E extends BlocEvent, S extends BlocState> implements Blo
   }
 
   @override
-  Stream<S> get out => _stateStreamController.stream.asBroadcastStream();
+  late final Stream<S> out = _stateStreamController.stream.asBroadcastStream();
 
   @override
   S get state => _state;
@@ -48,7 +49,7 @@ abstract class BlocBase<E extends BlocEvent, S extends BlocState> implements Blo
   }
   
   @override
-  void onEvent<Event extends E>(EventHandler<Event> handler, {BlocTag tag = const GlobalBlocTag()}) {
+  void onEvent<Event extends E>(EventHandler<Event> handler, {BlocTag tag = BlocTag.global}) {
     _blocHandleStorage.addEventHandler<Event>(handler, tag);
   }
 
