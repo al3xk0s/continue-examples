@@ -1,7 +1,16 @@
 part of 'event.dart';
 
-class TodoListGetDataEvent extends TodoListEvent {
-  const TodoListGetDataEvent();
+abstract class HasFilterEvent extends TodoListEvent {
+  const HasFilterEvent(this.filter);
+  final TodoFilter filter;
+}
+
+class TodoListGetDataEvent extends HasFilterEvent {
+  const TodoListGetDataEvent(super.filter);
+}
+
+class TodoListNextFilterEvent extends HasFilterEvent {
+  const TodoListNextFilterEvent(super.filter);
 }
 
 class TodoListCreateTodoEvent extends TodoListEvent {

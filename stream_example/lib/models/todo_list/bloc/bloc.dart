@@ -1,9 +1,12 @@
+import 'dart:async';
+
 import 'package:stream_example/bloc/base/bloc.dart';
 import 'package:stream_example/bloc/base/bloc_handle_storage.dart';
 import 'package:stream_example/models/todo/abstract/todo.dart';
 import 'package:stream_example/models/todo_list/bloc/event/event.dart';
 import 'package:stream_example/models/todo_list/bloc/message_generator.dart';
 import 'package:stream_example/models/todo_list/bloc/state/state.dart';
+import 'package:stream_example/models/todo_list/todo_filter/filter.dart';
 import 'package:stream_example/models/todo_list/todo_list.dart';
 
 class TodoListBloc extends BlocBase<TodoListEvent, TodoListState> {
@@ -13,6 +16,7 @@ class TodoListBloc extends BlocBase<TodoListEvent, TodoListState> {
   ) {
 
     onEvent<TodoListGetDataEvent>(_onGetData);
+    onEvent<TodoListNextFilterEvent>(_onNextFilterEvent);
     onEvent<TodoListCreateTodoEvent>(_onCreateTodo);
     onEvent<TodoEditTitleEvent>(_onEditTitle);
     onEvent<TodoSwitchStatusEvent>(_onSwitchTodoStatus);
@@ -20,18 +24,32 @@ class TodoListBloc extends BlocBase<TodoListEvent, TodoListState> {
   }
 
   final TodoList todoList;
+  late TodoFilter _actualFilter;
 
   Future<void> _onGetData(TodoListGetDataEvent event) async {
+    _actualFilter = event.filter;
+
     try {
       final List<Todo> todos = await todoList.getTodos().toList();
-      final List<Todo> sorted = _getSortedTodo(todos);      
+      final List<Todo> selectedTodos = _actualFilter.exec(todos).toList();      
 
-      sorted.isEmpty ? 
-        emitState(TodoListState.empty) :
-        emitState(TodoListSuccessLoadedState(sorted));
+      selectedTodos.isEmpty ? 
+        emitState(TodoListEmptyState(filter: _actualFilter)) :
+        emitState(TodoListSuccessLoadedState(selectedTodos, filter: _actualFilter));
     } catch (e) {
       emitState(TodoListState.loadingError);
     }
+  }
+
+  FutureOr<void> _onNextFilterEvent(TodoListNextFilterEvent event) {
+    const filters = [ TodoFilter.sorting, TodoFilter.onlyActual, TodoFilter.onlyResolved ];
+
+    final int currentIndex = filters.indexOf(event.filter);
+    final int nextFilterIndex = (currentIndex + 1) % filters.length;
+
+    final TodoFilter nextFilter = filters[nextFilterIndex];
+
+    emit(TodoListGetDataEvent(nextFilter));
   }
 
   Future<void> _onCreateTodo(TodoListCreateTodoEvent event) async {
@@ -40,7 +58,7 @@ class TodoListBloc extends BlocBase<TodoListEvent, TodoListState> {
     await todoList.addTodo(event.title!);
 
     emit(TodoListChangedTitleEvent(getChangeTitleMessage(event.title!)));
-    emit(TodoListEvent.getData);
+    emit(TodoListGetDataEvent(_actualFilter));
   }
 
   Future<void> _onEditTitle(TodoEditTitleEvent event) async {
@@ -52,7 +70,7 @@ class TodoListBloc extends BlocBase<TodoListEvent, TodoListState> {
     await todoList.editTodo(old.id, event.newTitle!, old.isActual);
 
     emit(TodoListChangedTitleEvent(getChangeTitleMessage(event.newTitle!)));
-    emit(TodoListEvent.getData);
+    emit(TodoListGetDataEvent(_actualFilter));
   }
 
   Future<void> _onSwitchTodoStatus(TodoSwitchStatusEvent event) async {
@@ -63,13 +81,13 @@ class TodoListBloc extends BlocBase<TodoListEvent, TodoListState> {
       emit(TodoListTodoResolvedEvent(getResolveTodoMessage(''))) :
       emit(TodoListTodoActualizeEvent(getActualizeTodoMessage('')));
 
-    emit(TodoListEvent.getData);
+    emit(TodoListGetDataEvent(_actualFilter));
   }
 
   Future<void> _onRemoveTodo(TodoListRemoveTodoEvent event) async {
     final Todo todo = await todoList.removeTodo(event.id);
     emit(TodoListTodoRemovedEvent(getRemoveTodoMessage(todo.title)));
-    emit(TodoListEvent.getData);
+    emit(TodoListGetDataEvent(_actualFilter));
   }
 
   bool _validateTitle(String? title) {
@@ -82,15 +100,6 @@ class TodoListBloc extends BlocBase<TodoListEvent, TodoListState> {
     }
 
     return false;
-  }
-
-  List<Todo> _getSortedTodo(List<Todo> todo) {
-    final List<Todo> result = [];
-
-    result.addAll(todo.where((t) => t.isActual));
-    result.addAll(todo.where((t) => !t.isActual));
-
-    return result;
   }
 } 
 

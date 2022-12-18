@@ -12,9 +12,12 @@ extension ReadBloc on BuildContext {
 }
 
 extension SnackBarMessage on BuildContext {
-  void snackbarMessage(String message) {
+  void snackbarMessage(String message, {Duration duration = const Duration(seconds: 4)}) {
     ScaffoldMessenger.of(this).showSnackBar(
-      SnackBar(content: Text(message))
+      SnackBar(
+        content: Text(message),
+        duration: duration,
+      )
     );
   }
 }

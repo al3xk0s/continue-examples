@@ -3,6 +3,7 @@ import 'package:stream_example/extentions/context.dart';
 import 'package:stream_example/models/todo_list/bloc/bloc.dart';
 import 'package:stream_example/models/todo_list/bloc/event/event.dart';
 import 'package:stream_example/views/todo_edit_dialog_widget.dart';
+import 'package:stream_example/views/todo_filter_switch_widget.dart';
 import 'package:stream_example/views/todo_list_widget.dart';
 
 class TodoListScreen extends StatelessWidget {
@@ -18,6 +19,12 @@ class TodoListScreen extends StatelessWidget {
       appBar: AppBar(
         title: const Text('Todo list'),
         centerTitle: true,
+        actions: const [
+          Padding(
+            padding: EdgeInsets.only(right: 40),
+            child: TodoFitlerSwitchWidget(),
+          )
+        ],
       ),
       body: Padding(
         padding: EdgeInsets.all(padding),
@@ -70,6 +77,10 @@ class TodoListScreen extends StatelessWidget {
 
   void _handleEventMessage(BuildContext context, TodoListMessageEvent event) {
     if(event.message == null) return;
-    context.snackbarMessage(event.message!);
+
+    context.snackbarMessage(
+      event.message!, 
+      duration: const Duration(seconds: 1, milliseconds: 500)
+    );
   }
 }

@@ -9,7 +9,7 @@ import 'package:stream_example/models/todo/factory/todo_factory.dart';
 import 'package:stream_example/models/todo/impl/todo_model.dart';
 import 'package:stream_example/models/todo_list/bloc/bloc.dart';
 import 'package:stream_example/models/todo_list/todo_list.dart';
-import 'package:stream_example/models/todo_repository.dart';
+import 'package:stream_example/models/todo_list/repository/todo_repository.dart';
 import 'package:stream_example/views/todo_list_screen.dart';
 
 void main() {

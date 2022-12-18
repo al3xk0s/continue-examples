@@ -5,6 +5,7 @@ import 'package:stream_example/models/todo/abstract/todo.dart';
 import 'package:stream_example/models/todo_list/bloc/bloc.dart';
 import 'package:stream_example/models/todo_list/bloc/event/event.dart';
 import 'package:stream_example/models/todo_list/bloc/state/state.dart';
+import 'package:stream_example/models/todo_list/todo_filter/filter.dart';
 import 'package:stream_example/views/todo_widget.dart';
 
 
@@ -15,7 +16,8 @@ class TodoListWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     final TodoListBloc bloc = context.readBloc()!;
 
-    bloc.emit(TodoListEvent.getData);
+    bloc.emit(const TodoListGetDataEvent(TodoFilter.sorting));
+    
     return _getWrapper(
       child: BlocBuilder<TodoListEvent, TodoListState, TodoListBloc>(
         bloc: bloc, 

@@ -2,7 +2,7 @@ import 'package:stream_example/models/todo/abstract/todo.dart';
 import 'package:stream_example/models/todo/abstract/todo_id.dart';
 import 'package:stream_example/models/todo/abstract/todo_model.dart';
 import 'package:stream_example/models/todo/factory/todo_factory.dart';
-import 'package:stream_example/models/todo_repository.dart';
+import 'package:stream_example/models/todo_list/repository/todo_repository.dart';
 
 abstract class TodoList {
   Stream<Todo> getTodos();
