@@ -9,6 +9,7 @@ class IdGeneratorImpl implements IdGenerator {
   static final alfabet = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ_0123456789=-'
     .split('');
 
+  @override
   String generate(int length) {
     final StringBuffer result = StringBuffer();
     for(int i = 0; i < length; i++) {

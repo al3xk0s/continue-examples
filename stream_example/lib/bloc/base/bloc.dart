@@ -1,6 +1,5 @@
 import 'dart:async';
 
-import 'package:flutter/foundation.dart';
 import 'package:stream_example/bloc/base/bloc_handle_storage.dart';
 import 'package:stream_example/bloc/base/event.dart';
 import 'package:stream_example/bloc/base/state.dart';

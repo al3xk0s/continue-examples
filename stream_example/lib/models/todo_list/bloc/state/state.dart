@@ -1,7 +1,6 @@
 import 'package:stream_example/bloc/base/state.dart';
 import 'package:stream_example/bloc/base/tag.dart';
 import 'package:stream_example/models/todo/abstract/todo.dart';
-import 'package:stream_example/models/todo_list/bloc/tag.dart';
 
 part 'list_states.dart';
 

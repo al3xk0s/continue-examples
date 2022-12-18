@@ -14,10 +14,11 @@ class TodoListWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final TodoListBloc bloc = context.readBloc()!;
-    context.readBloc<TodoListBloc>()!.emit(TodoListEvent.getData);
+
+    bloc.emit(TodoListEvent.getData);
     return _getWrapper(
       child: BlocBuilder<TodoListEvent, TodoListState, TodoListBloc>(
-        bloc: context.readBloc<TodoListBloc>()!, 
+        bloc: bloc, 
         builder: _builder,
       ),
     );
@@ -62,6 +63,7 @@ class TodoListWidget extends StatelessWidget {
   ) {
     final List<Todo> data = state.todos;
     return ListView.builder(
+      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 12),
       itemCount: data.length,
       itemBuilder: ((context, index) {
         final todo = data[index];

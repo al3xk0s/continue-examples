@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:stream_example/bloc/widget/bloc_builder.dart';
 import 'package:stream_example/extentions/context.dart';
 import 'package:stream_example/models/todo/abstract/todo.dart';
 import 'package:stream_example/models/todo_list/bloc/bloc.dart';
@@ -16,6 +15,7 @@ class TodoWidget extends StatelessWidget {
     final TodoListBloc bloc = context.readBloc()!;
 
     return Card(
+      elevation: 2,
       child: ListTile(
         trailing: IconButton(
           icon: const Icon(Icons.delete),
