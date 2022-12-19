@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:stream_example/bloc/base/bloc.dart';
 import 'package:stream_example/bloc/base/bloc_handle_storage.dart';
+import 'package:stream_example/extentions/todo_filter.dart';
 import 'package:stream_example/models/todo/abstract/todo.dart';
 import 'package:stream_example/models/todo_list/bloc/event/event.dart';
 import 'package:stream_example/models/todo_list/bloc/message_generator.dart';
@@ -38,7 +39,7 @@ class TodoListBloc extends BlocBase<TodoListEvent, TodoListState> {
   Future<void> _onGetData(TodoListGetDataEvent event) async {
     try {
       final List<Todo> todos = await todoList.getTodos().toList();
-      final List<Todo> selectedTodos = _actualFilter.exec(todos).toList();      
+      final List<Todo> selectedTodos = todos.applyFilter(_actualFilter).toList();
 
       selectedTodos.isEmpty ? 
         emitState(TodoListState.emptyState) :
