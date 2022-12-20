@@ -35,6 +35,8 @@ class TodoListBloc extends BlocBase<TodoListEvent, TodoListState> {
   TodoFilter get nextFilter => _getNextFilter();
 
   TodoFilter _actualFilter = _filters.first;
+  
+  void emitMessage(TodoListMessageEvent event) => emit<TodoListMessageEvent>(event);
 
   Future<void> _onGetData(TodoListGetDataEvent event) async {
     try {
@@ -59,7 +61,7 @@ class TodoListBloc extends BlocBase<TodoListEvent, TodoListState> {
 
     await todoList.addTodo(event.title!);
 
-    emit(TodoListChangedTitleEvent(getChangeTitleMessage(event.title!)));
+    emitMessage(TodoListChangedTitleEvent(getChangeTitleMessage(event.title!)));
     emit(TodoListEvent.getData);
   }
 
@@ -71,7 +73,7 @@ class TodoListBloc extends BlocBase<TodoListEvent, TodoListState> {
     
     await todoList.editTodo(old.id, event.newTitle!, old.isActual);
 
-    emit(TodoListChangedTitleEvent(getChangeTitleMessage(event.newTitle!)));
+    emitMessage(TodoListChangedTitleEvent(getChangeTitleMessage(event.newTitle!)));
     emit(TodoListEvent.getData);
   }
 
@@ -80,15 +82,15 @@ class TodoListBloc extends BlocBase<TodoListEvent, TodoListState> {
     await todoList.editTodo(old.id, old.title, !old.isActual);
 
     !old.isActual ? 
-      emit(TodoListTodoResolvedEvent(getResolveTodoMessage(''))) :
-      emit(TodoListTodoActualizeEvent(getActualizeTodoMessage('')));
+      emitMessage(TodoListTodoResolvedEvent(getResolveTodoMessage(''))) :
+      emitMessage(TodoListTodoActualizeEvent(getActualizeTodoMessage('')));
 
     emit(TodoListEvent.getData);
   }
 
   Future<void> _onRemoveTodo(TodoListRemoveTodoEvent event) async {
     final Todo todo = await todoList.removeTodo(event.id);
-    emit(TodoListTodoRemovedEvent(getRemoveTodoMessage(todo.title)));
+    emitMessage(TodoListTodoRemovedEvent(getRemoveTodoMessage(todo.title)));
     emit(TodoListEvent.getData);
   }
 
@@ -96,9 +98,9 @@ class TodoListBloc extends BlocBase<TodoListEvent, TodoListState> {
     if(title != null && title.isNotEmpty) return true;
 
     if(title == null) {
-      emit(TodoListEmptyTodoTitleEvent(getEmptyTitleMessage('')));
+      emitMessage(TodoListEmptyTodoTitleEvent(getEmptyTitleMessage('')));
     } else if (title.isEmpty) {
-      emit(TodoListInvalidTodoTitleEvent(getInvalidTitleMessage('')));
+      emitMessage(TodoListInvalidTodoTitleEvent(getInvalidTitleMessage('')));
     }
 
     return false;

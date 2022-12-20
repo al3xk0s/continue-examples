@@ -22,8 +22,3 @@ class _TodoListHasTodoEvent extends _TodoListIdEvent {
   _TodoListHasTodoEvent(this.todo) : super(todo.id);
   final Todo todo;
 }
-
-class TodoListMessageEvent extends TodoListEvent {
-  const TodoListMessageEvent(this.message);
-  final String? message;
-}

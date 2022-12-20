@@ -46,6 +46,4 @@ class MyApp extends StatelessWidget {
       TodoFactoryImpl(IdGeneratorImpl(Random())),
     );
   }
-
-
 }

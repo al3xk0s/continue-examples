@@ -66,13 +66,8 @@ class TodoListScreen extends StatelessWidget {
 
   void _attachToTitleEvents(BuildContext context) {
     final TodoListBloc bloc = context.readBloc()!;
-
-    bloc.onEvent<TodoListInvalidTodoTitleEvent>((e) => _handleEventMessage(context, e));
-    bloc.onEvent<TodoListEmptyTodoTitleEvent>((e) => _handleEventMessage(context, e));
-    bloc.onEvent<TodoListChangedTitleEvent>((e) => _handleEventMessage(context, e));
-    bloc.onEvent<TodoListTodoResolvedEvent>((e) => _handleEventMessage(context, e));
-    bloc.onEvent<TodoListTodoActualizeEvent>((e) => _handleEventMessage(context, e));
-    bloc.onEvent<TodoListTodoRemovedEvent>((e) => _handleEventMessage(context, e));
+    
+    bloc.onEvent<TodoListMessageEvent>((e) => _handleEventMessage(context, e));
 
     bloc.onEvent<TodoListNextFilterEvent>((e) => context.snackbarMessage(
         bloc.filter.description,

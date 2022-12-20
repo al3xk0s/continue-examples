@@ -1,5 +1,10 @@
 part of 'event.dart';
 
+class TodoListMessageEvent extends TodoListEvent {
+  const TodoListMessageEvent(this.message);
+  final String? message;
+}
+
 class TodoListInvalidTodoTitleEvent extends TodoListMessageEvent {
   const TodoListInvalidTodoTitleEvent(super.message);
 }
