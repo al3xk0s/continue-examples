@@ -38,7 +38,7 @@ class MyApp extends StatelessWidget {
     final models = <TodoModel>[
       TodoModelImpl(id: TodoId('0'), title: 'Подготовить доклад'),
       TodoModelImpl(id: TodoId('1'), title: 'Рассказать про ппп'),
-      TodoModelImpl(id: TodoId('2'), title: 'Послушать Рэп про любовь')
+      TodoModelImpl(id: TodoId('2'), title: 'Послушать Рэп про котов')
     ];
 
     return TodoListImpl(

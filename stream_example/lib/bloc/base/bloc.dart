@@ -36,7 +36,7 @@ abstract class BlocBase<E extends BlocEvent, S extends BlocState> implements Blo
   @override
   void emitState(S state) {
     _state = state;
-    _stateInput.add(state);
+    _stateStreamController.add(state);
   }
   
   FutureOr<void> _mapEventToState<Event extends E>(Event event) async {
@@ -61,6 +61,4 @@ abstract class BlocBase<E extends BlocEvent, S extends BlocState> implements Blo
   late final BlocHandleStorage<E> _blocHandleStorage;
 
   late S _state;
-
-  StreamSink<S> get _stateInput => _stateStreamController.sink;
 }

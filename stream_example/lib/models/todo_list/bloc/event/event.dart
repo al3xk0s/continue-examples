@@ -12,13 +12,3 @@ abstract class TodoListEvent extends BlocEvent {
   static const getData = TodoListGetDataEvent();
   static const nextFilter = TodoListNextFilterEvent();
 }
-
-class _TodoListIdEvent extends TodoListEvent {
-  const _TodoListIdEvent(this.id);
-  final TodoId id;
-}
-
-class _TodoListHasTodoEvent extends _TodoListIdEvent {
-  _TodoListHasTodoEvent(this.todo) : super(todo.id);
-  final Todo todo;
-}

@@ -1,5 +1,10 @@
 part of 'event.dart';
 
+class _TodoListIdEvent extends TodoListEvent {
+  const _TodoListIdEvent(this.id);
+  final TodoId id;
+}
+
 class TodoListGetDataEvent extends TodoListEvent {
   const TodoListGetDataEvent();
 }
