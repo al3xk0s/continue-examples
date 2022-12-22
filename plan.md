@@ -6,6 +6,7 @@
 * Передачи продолжений как часть ФП
 * Позитивные моменты спп
 * Негативные моменты спп
+* *Перерыв на мемы*
 * Фичи в языках
 * Замыкания
   * Пример со слайда
@@ -18,12 +19,15 @@
   * Обработчики на фронте `3_express-server/static/script.js` (обработчики на фронте)
   * Мидлвэры `3_express-server/src/middleware.ts` (рассказ про мидлверы)
   * Промисы `4_my-future/src/index.ts` (промисы)
-* Перерыв на мемы
+* *Перерыв на мемы*
 * Генераторы
   * Генераторы - магия `5_generator_example/bin/sync/vanila.dart`
   * Генераторы - это не магия `5_generator_example/bin/sync/range_iterable.dart`
+  * Генераторы бесконечных последовательностей `5_generator_example/bin/sync/sequence.dart`
+  * Генераторы в рекурсии `5_generator_example/bin/sync/recursion.dart`
+  * Генераторы дополнение стрим API `5_generator_example/bin/sync/cat_map.dart`
   * Применение генераторов `6_linq_example/linq/linq_api.py`
-  * Перерыв на мемы
+  * *Перерыв на мемы*
   * Асинхронные генераторы `5_generator_example/bin/async/vanila.dart`
   * Чтение и мгновенная обработка из файла и `observer` `5_generator_example/bin/async/read_file.dart`
   * Применение стримов и генераторов в архитектурных паттернах мобильной разработки
