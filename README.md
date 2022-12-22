@@ -9,13 +9,13 @@
 - `python3 name.py`
 
 ## Примеры
-- [Замыкания](./closures/bin/)
-- [Функции как объект на примере express](./express-server/)
-- [Функции как объект на собственной реализации промиса](./my-future/)
-- [Генераторы](./generator_example/bin/)
-- [Концепция cps в функциональном стиле](./cps-concept/example.py)
-- [Пример комбинирования генераторов: python linq](./linq_example/)
-- [Пример использования ассинхронных генераторов, стримы](./stream_example/lib/)
+- [Замыкания](./1_closures/bin/)
+- [Концепция cps в функциональном стиле](./2_cps_concept/example.py)
+- [Функции как объект на примере express](./3_express_server/)
+- [Функции как объект на собственной реализации промиса](./4_my_future/)
+- [Генераторы](./5_generator_example/bin/)
+- [Пример комбинирования генераторов: python linq](./6_linq_example/)
+- [Пример использования ассинхронных генераторов, стримы](./7_stream_example/lib/)
 - [Собранный todo list](./todo_list_dist/)
 
 
